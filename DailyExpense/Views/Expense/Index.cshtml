@@ -1,0 +1,111 @@
+﻿@model IEnumerable<DailyExpense.Models.Expense>
+
+@{
+    ViewData["Title"] = "Home Page";
+    IList<Expense> listModel = (IList<Expense>)ViewData["Detail"];
+    listModel = listModel;
+}
+
+<div class="col">
+    <form role="form" class="form-horizontal" id="searchForm" method="post" action="https://localhost:44376/Expense/Searchx">
+        <div class="row mb-3">
+            <label class="col-sm-3 col-form-label">Pengeluaran</label>
+            <div class="col-sm-6">
+                <input id="txtPengeluaran" type="text" class="form-control" name="pengeluaran">
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label class="col-sm-3 col-form-label">Jumlah Pengeluaran Dari</label>
+            <div class="col-sm-6">
+                <input id="txtJmlPengeluaran" type="text" class="form-control" name="jmlPengeluaran">
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label class="col-sm-3 col-form-label">Sampai</label>
+            <div class="col-sm-6">
+                <input id="txtJmlPengeluaran2" type="text" class="form-control" name="jmlPengeluaran2">
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label class="col-sm-3 col-form-label">Tanggal Pengeluaran Dari</label>
+            <div class="col-sm-6">
+                <input id="txtTglPengeluaran" type="text" class="form-control" name="tglPengeluaran" placeholder="yyyy-mm-dd">
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label class="col-sm-3 col-form-label">Sampai</label>
+            <div class="col-sm-6">
+                <input id="txtTglPengeluaran2" type="text" class="form-control" name="tglPengeluaran2" placeholder="yyyy-mm-dd">
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-sm-9">
+                <button type="button" id="clearButton" class="btn-primary float-right" onclick="btnClear_onClick()">Clear</button>
+                @*<button type="submit" id="searchButton" class="btn-primary float-right" style="margin-right: 10px;">Search</button>*@
+                <button type="button" id="searchButton" onclick="btnSearch_onClick()" class="btn-primary float-right" style="margin-right: 10px;">Search</button>
+            </div>
+        </div>
+    </form>
+</div>
+<br>
+
+<div class="col">
+    <div class="row mb-3">
+        <div class="col-sm-12">
+            
+            <button class="float-right btn-primary">
+                <a href="@Url.Action("Create")" class="text-white ">
+                    Tambah
+                </a>
+            </button>
+        </div>
+    </div>
+</div>
+
+<div id="modalEdit" class="modal fade" style="padding-left: 0px !important; width:100%" ; data-backdrop="static" data-keyboard="false">
+
+</div>
+
+<div id="divGrid" style="display:inline">
+    @Html.Partial("_GridView")
+</div>
+
+<script>
+    function btnClear_onClick() {
+        $('#txtPengeluaran').val('');
+        $('#txtJmlPengeluaran').val('');
+        $('#txtJmlPengeluaran2').val('');
+        $('#txtTglPengeluaran').val('');
+        $('#txtTglPengeluaran2').val('');
+    }
+
+
+    function btnSearch_onClick() {
+        $.ajax({
+            type: "POST",
+            url: "https://localhost:44376/Expense/Search",
+            data: {
+                nama_pengeluaran: $("#txtPengeluaran").val(),
+                jumlah_pengeluaran: $("#txtJmlPengeluaran").val(),
+                jumlah_pengeluaran2: $("#txtJmlPengeluaran2").val(),
+                tanggal_pengeluaran: $("#txtTglPengeluaran").val(),
+                tanggal_pengeluaran2: $("#txtTglPengeluaran2").val()
+            },
+            success: function(data){
+                $("#divGrid").html(data);
+            },
+            error: function(data){
+                popUpProgressHide();
+            }
+        });
+    }
+
+    
+
+
+</script>

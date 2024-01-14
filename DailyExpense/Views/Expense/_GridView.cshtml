@@ -1,0 +1,85 @@
+﻿@model IEnumerable<DailyExpense.Models.Expense>
+
+@{
+    IList<Expense> listModel = (IList<Expense>)ViewData["Detail"];
+    listModel = listModel;
+}
+
+<table id="tableIndex" class="table">
+    <tr>
+        <th>No</th>
+        <th>Nama Pengeluaran</th>
+        <th>Jumlah Pengeluaran</th>
+        <th>Tanggal Pengeluaran</th>
+        <th>Action</th>
+    </tr>
+    @if (listModel == null || listModel.Count == 0)
+    {
+        <tr>
+            <td colspan="6" style="text-align: center;">
+                Data tidak ditemukan
+            </td>
+        </tr>
+    }
+    else
+    {
+        int a = 1;
+        float b = 0;
+        foreach (var item in listModel)
+        {
+            <tr>
+                <td>
+                    @a
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.nama_pengeluaran)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.jumlah_pengeluaran)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.tanggal_pengeluaran)
+                </td>
+                <td>
+                    @*<button type="button" class="btn-info float-right" onclick="btnEdit_onClick()">
+                        Edit
+                    </button>*@
+                    @Html.ActionLink("Edit", "Edit", new { id = item.id })
+                </td>
+            </tr>
+            a++;
+            b += float.Parse(item.jumlah_pengeluaran);
+        }
+        <tr>
+            <th>
+                Total Pengeluaran
+            </th>
+            <th colspan="4" style="text-align: center;">
+                @b
+            </th>
+        </tr>
+    }
+</table>
+
+<script>
+    //function btnEdit_onClick() {
+    //    $.ajax({
+    //        type: "POST",
+    //        url: "https://localhost:44376/Expense/Edit",
+    //        success: function (data) {
+    //            html(data);
+    //        },
+    //        error: function (data) {
+                
+    //        }
+    //    });
+
+    //    $('#txtEditPengeluaran').val('');
+    //    $('#txtEditJmlPengeluaran').val('');
+    //    $('#txtEditJmlPengeluaran2').val('');
+    //    $('#txtEditTglPengeluaran').val('');
+    //    $('#txtEditTglPengeluaran2').val('');
+    //}
+
+
+</script>
